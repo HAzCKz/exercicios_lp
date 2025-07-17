@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX 50
-
 struct aluno{
   char nome[30];
   int RA;
@@ -12,7 +10,7 @@ struct aluno{
 
 int insereAluno(struct aluno turma[], int qtd, struct aluno novoAluno)
 {
-    if (qtd >= MAX) {
+    if (qtd >=50) {
         printf("Turma cheia!\n");
         return qtd;
     }
@@ -69,7 +67,7 @@ void buscarAluno(struct aluno turma[], int qtd, int ra)
 
 int main()
 {
-    struct aluno turmaLP[MAX];
+    struct aluno turmaLP[50];
     int qtd = 0;
     int opcao;
     int ra;
