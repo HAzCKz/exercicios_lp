@@ -10,49 +10,31 @@ struct aluno{
   int freq;
 };
 
-// Insere um aluno e retorna a nova quantidade
-int insereAluno(struct aluno turma[], int qtd)
+int insereAluno(struct aluno turma[], int qtd, struct aluno novoAluno)
 {
     if (qtd >= MAX) {
         printf("Turma cheia!\n");
-        return qtd; // retorna qtd sem alteração
+        return qtd;
     }
     
-    printf("Nome: ");
-    fgets(turma[qtd].nome, sizeof(turma[qtd].nome), stdin);
-    turma[qtd].nome[strcspn(turma[qtd].nome, "\n")] = '\0'; // remove \n
+    turma[qtd] = novoAluno;
     
-    printf("RA: ");
-    scanf("%d", &turma[qtd].RA);
-    
-    for (int j = 0; j < 3; j++) {
-        printf("Nota %d: ", j + 1);
-        scanf("%f", &turma[qtd].notas[j]);
-    }
-    
-    printf("Frequencia: ");
-    scanf("%d", &turma[qtd].freq);
-    
-    getchar(); // para consumir o '\n' após o último scanf
-    return qtd + 1; // incrementa qtd e retorna
+    return qtd + 1;
 }
 
-// Remove aluno pelo RA e retorna a nova quantidade
 int removeAluno(struct aluno turma[], int qtd, int ra)
 {
     for (int i = 0; i < qtd; i++) {
         if (turma[i].RA == ra) {
-            // Move todos os alunos após o removido uma posição pra trás
             for (int j = i; j < qtd - 1; j++) {
                 turma[j] = turma[j + 1];
             }
-            return qtd - 1; // decrementa qtd e retorna
+            return qtd - 1;
         }
     }
-    return qtd; // RA não encontrado, qtd não muda
+    return qtd;
 }
 
-// Visualiza todos os alunos
 void visualizarAlunos(struct aluno turma[], int qtd)
 {
     if (qtd == 0) {
@@ -70,7 +52,6 @@ void visualizarAlunos(struct aluno turma[], int qtd)
     }
 }
 
-// Busca aluno pelo RA
 void buscarAluno(struct aluno turma[], int qtd, int ra)
 {
     for (int i = 0; i < qtd; i++) {
@@ -89,7 +70,7 @@ void buscarAluno(struct aluno turma[], int qtd, int ra)
 int main()
 {
     struct aluno turmaLP[MAX];
-    int qtd = 0; // quantidade de alunos cadastrados
+    int qtd = 0;
     int opcao;
     int ra;
     
@@ -102,12 +83,32 @@ int main()
         printf("0 - Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
-        getchar(); // para consumir '\n' do buffer
+        getchar();
         
         switch(opcao) {
-            case 1:
-                qtd = insereAluno(turmaLP, qtd);
+            case 1: {
+                struct aluno novoAluno;
+                
+                printf("Nome: ");
+                fgets(novoAluno.nome, sizeof(novoAluno.nome), stdin);
+                novoAluno.nome[strcspn(novoAluno.nome, "\n")] = '\0';
+                
+                printf("RA: ");
+                scanf("%d", &novoAluno.RA);
+                
+                for (int j = 0; j < 3; j++) {
+                    printf("Nota %d: ", j + 1);
+                    scanf("%f", &novoAluno.notas[j]);
+                }
+                
+                printf("Frequencia: ");
+                scanf("%d", &novoAluno.freq);
+                
+                getchar();
+                
+                qtd = insereAluno(turmaLP, qtd, novoAluno);
                 break;
+            }
             case 2:
                 printf("Digite o RA do aluno a remover: ");
                 scanf("%d", &ra);
